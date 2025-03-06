@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+#learndiv {
+    display: none;
+}
+
+#addCard {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+#btnadd {
+    background-color: rgb(4, 169, 109); /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#btnadd:hover {
+    cursor: pointer;
+}
+
+#btnadd:active {
+    background-color: rgb(100, 100, 100);
+    padding: 5px 15px;
+}
+
+body {
+    padding-left: 20px;
+    font-family: "Inter", sans-serif;
+}
