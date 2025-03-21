@@ -54,14 +54,51 @@ public class ApiController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/checkEnglish")
+    public ResponseEntity<Map<String, String>> checkEnglish(@RequestBody Map<String, Object> requestData) {
+        Map<String, String> response = new HashMap<>();
+
+        if (requestData.containsKey("message") && requestData.get("message") != null &&
+            requestData.containsKey("id") && requestData.get("id") instanceof Number) {
+            String word = requestData.get("message").toString();
+            int id = ((Number) requestData.get("id")).intValue();
+            String result = VocabularyTrainerWeb.isCorrect(word, id, 2);
+            
+            response.put("result", result);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Missing or invalid 'message' or 'id' parameter");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    @PostMapping("/checkSpanish")
+    public ResponseEntity<Map<String, String>> checkSpanish(@RequestBody Map<String, Object> requestData) {
+        Map<String, String> response = new HashMap<>();
+
+        if (requestData.containsKey("message") && requestData.get("message") != null &&
+            requestData.containsKey("id") && requestData.get("id") instanceof Number) {
+            String word = requestData.get("message").toString();
+            int id = ((Number) requestData.get("id")).intValue();
+            String result = VocabularyTrainerWeb.isCorrect(word, id, 1);
+            
+            // Return the result in the response
+            response.put("result", result);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Missing or invalid 'message' or 'id' parameter");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
     @PostMapping("/addWord")
     public ResponseEntity<Map<String, String>> addWord(@RequestBody Map<String, String> requestData) {
         Map<String, String> response = new HashMap<>();
         
         // Check if 'message' key exists in the requestData
-        if (requestData.containsKey("message") && requestData.get("message") != null) {
+        if (requestData.containsKey("En") && requestData.get("En") != null) {
             // Call the static method directly using the class name
-            VocabularyTrainerWeb.addVocabCard(requestData.get("message"), "d");  // "d" could represent a category/definition
+            VocabularyTrainerWeb.addVocabCard(requestData.get("En"), requestData.get("Spa"));  
             
             response.put("message", "Word added: " + requestData.get("message"));
             return ResponseEntity.ok(response); // Return success response

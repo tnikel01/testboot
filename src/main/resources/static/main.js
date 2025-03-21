@@ -6,9 +6,13 @@ const addEn = document.getElementById('addEn');
 const Fieldload = document.getElementById('load');
 const Useranswer = document.getElementById('Useranswer');
 const messageContainer = document.getElementById('learndiv');
+let selec = 0;
+let id = -1;
 
 btn12.addEventListener('click', function() {
   const newMessage = document.createElement('p');
+
+  selec = 1;
 
   btn12.style.display = "none";
   btn21.style.display = "none";
@@ -25,6 +29,8 @@ btn21.addEventListener('click', function() {
   btn12.style.display = "none";
   btn21.style.display = "none";
 
+  selec = 2;
+
   messageContainer.style.display = "block";
   newMessage.textContent = 'Spanish-English';
 
@@ -33,15 +39,18 @@ btn21.addEventListener('click', function() {
 });
 
 btnadd.addEventListener('click', function(){
-  fetch('https://orange-space-train-x5qjv4w75vqhv47x-8080.app.github.dev/api/addWord', {
+  fetch('/api/addWord', {
     method: "POST",
       headers: {
           "Content-Type": "application/json"
       },
-      body: JSON.stringify({ message: addEn.value })
+      body: JSON.stringify({En: addEn.value, Spa: addSpan.value})
   })
   .then(response => response.text())
-  .then(data => console.log("Response from server:", data))
+  .then(data => {console.log("Response from server:", data)
+    addEn.value="";
+    addSpan.value="";
+  })
   .catch(error => console.error("Error:", error));
 });
 
@@ -57,36 +66,86 @@ Useranswer.addEventListener("keydown", function(event) {
   if (event.key === "Enter" && this.value.trim() !== "") {
       event.preventDefault(); 
       let inputValue = this.value.trim();
+      if(selec == 2){
+        checkEnglishWord(inputValue);
+      }else{
+        checkSpanishWord(inputValue);
+      }
       console.log("Answer:", inputValue);
+      this.value = "";
   }
 });
 
+function checkSpanishWord(answer) {
+  fetch('/api/checkSpanish', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: answer, id: id })
+  })
+  .then(response => response.json())
+  .then(data => {console.log("Response from server:", data)
+    if (data.result === "correct") { 
+      getEnglishWord();
+    }
+  })
+  .catch(error => console.error("Error:", error));
+}
+
+
+function checkEnglishWord(answer){
+  fetch('/api/checkEnglish', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: answer, id: id })
+  })
+  .then(response => response.json())
+  .then(data => {console.log("Response from server:", data)
+    if (data.result === "correct") { 
+      getSpanishWord();
+    }
+  })
+  .catch(error => console.error("Error:", error));
+}
+
 function getSpanishWord(){
-  fetch('https://orange-space-train-x5qjv4w75vqhv47x-8080.app.github.dev/api/spanish')
+  fetch('/api/spanish')
   .then(response => response.text()) 
   .then(data => {
       console.log("Response:", data)
+      let wordData = data.split(',');
+      let word = wordData[0];
+      id = parseInt(wordData[1]); 
+      let wordTextElement = document.getElementById('WordText');
+      wordTextElement.innerHTML = "";
       let p = document.createElement('p');
-      p.textContent = data;
-      document.getElementById('WordText').appendChild(p);
+      p.textContent = word;
+      wordTextElement.appendChild(p);
   })
   .catch(error => console.error("Error:", error));
 }
 
 function getEnglishWord(){
-  fetch('https://orange-space-train-x5qjv4w75vqhv47x-8080.app.github.dev/api/english')
+  fetch('/api/english')
   .then(response => response.text()) 
   .then(data => {
       console.log("Response:", data)
+      let wordData = data.split(',');
+      let word = wordData[0];
+      id = parseInt(wordData[1]); 
+      let wordTextElement = document.getElementById('WordText');
+      wordTextElement.innerHTML = "";
       let p = document.createElement('p');
-      p.textContent = data;
-      document.getElementById('WordText').appendChild(p);
+      p.textContent = word;
+      wordTextElement.appendChild(p);
   })
   .catch(error => console.error("Error:", error));
 }
 
-
-fetch('https://orange-space-train-x5qjv4w75vqhv47x-8080.app.github.dev/api/data', {
+fetch('/api/data', {
   method: "POST",
     headers: {
         "Content-Type": "application/json"

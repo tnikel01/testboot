@@ -11,15 +11,16 @@ import java.util.Random;
 import org.fairviewhigh.javaprojekt.cards.VocabularyCard;
 
 public class VocabularyTrainerWeb {
-    private static final ArrayList<VocabularyCard> vocabList = new ArrayList();
+    private static final ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
     private static String filePath = "basic.csv";
-    private static final ArrayList<VocabularyCard> actualList = vocabList;
+    private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static void addVocabCard(String de, String span) {
         if (filePath.equals("")) {
             filePath = "basic.csv";
         }
         vocabList.add(new VocabularyCard(de, span));
+        actualList.add(new VocabularyCard(de, span));
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(getFilePath(filePath), true))) {
             writer.write(de + "," + span);
@@ -33,20 +34,22 @@ public class VocabularyTrainerWeb {
     public String getWord(int selec) {
         readFromCsv(getFilePath(filePath));
         //vocabList.add(new VocabularyCard("test", "hs"));
-        if (vocabList.isEmpty()) {
-            return "{\"error\": \"No words in list\"}";
+        if (actualList.isEmpty()) {
+            if(vocabList.isEmpty())
+                return "{\"error\": \"No words in list\"}";
+            else
+                actualList = vocabList;
         }
         int wordRan = new Random().nextInt(vocabList.size());
         if (selec == 1) 
-            return vocabList.get(wordRan).getGermanWord();
-        else if (selec == 2) 
-            return vocabList.get(wordRan).getSpanishWord();
-        else return "wrong id";
+            return actualList.get(wordRan).getGermanWord() + "," + wordRan;
+        else
+            return actualList.get(wordRan).getSpanishWord() + "," + wordRan;
     }
     //1 = German-Spanish
     //2 = Spanish-German
     
-    public String isCorrect(String word, int id, int selec){
+    public static String isCorrect(String word, int id, int selec){
         if(selec == 1){
             if(word.equals(actualList.get(id).getSpanishWord())){
                 actualList.remove(id);
