@@ -98,9 +98,9 @@ public class ApiController {
         // Check if 'message' key exists in the requestData
         if (requestData.containsKey("En") && requestData.get("En") != null) {
             // Call the static method directly using the class name
-            VocabularyTrainerWeb.addVocabCard(requestData.get("En"), requestData.get("Spa"));  
+            VocabularyTrainerWeb.addVocabCard(requestData.get("En"), requestData.get("Spa"));
             
-            response.put("message", "Word added: " + requestData.get("message"));
+            response.put("En", "Word added: " + requestData.get("En"));
             return ResponseEntity.ok(response); // Return success response
         } else {
             // Handle case where 'message' is missing or null
@@ -108,4 +108,28 @@ public class ApiController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // Return error response with 400 Bad Request
         }
     }
+
+    //doesn't work
+    
+    @PostMapping("/changeFile")
+public ResponseEntity<Map<String, String>> changeFile(@RequestBody Map<String, String> requestData) {
+    Map<String, String> response = new HashMap<>();
+    
+    if (requestData.containsKey("File") && requestData.get("File") != null) {
+        String fileName = requestData.get("File").trim();
+
+        boolean isFileChanged = VocabularyTrainerWeb.setFilePath(fileName);
+        
+        if (isFileChanged) {
+            response.put("message", "File successfully changed to: " + fileName);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Failed to change the file. Please check the file name.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    } else {
+        response.put("error", "Missing or invalid 'File' parameter");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+}
 }

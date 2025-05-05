@@ -21,6 +21,30 @@
     font-weight: 600;
 }
 
+#btn12 {
+    background-color: rgb(197, 199, 207); 
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#btn21 {
+    background-color: rgb(197, 199, 207);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+}
+
 #btnadd:hover {
     cursor: pointer;
 }

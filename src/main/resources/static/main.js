@@ -56,9 +56,31 @@ btnadd.addEventListener('click', function(){
 
 Fieldload.addEventListener("keydown", function(event) {
   if (event.key === "Enter" && this.value.trim() !== "") {
-      event.preventDefault();
-      let inputValue = this.value.trim();
-      console.log("Submitted:", inputValue);
+    event.preventDefault();
+    let inputValue = this.value.trim();
+    console.log("Submitted:", inputValue);
+
+    fetch('/api/changeFile', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ File: inputValue })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Response from server:", data);
+      if (data.message) {
+        alert(data.message);
+      } else if (data.error) {
+        alert("Fehler: " + data.error);
+      }
+      this.value = ""; // Eingabefeld leeren
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Ein Fehler ist aufgetreten");
+    });
   }
 });
 
