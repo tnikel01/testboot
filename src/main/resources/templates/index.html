@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vocab</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vocabulary Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Vocabulary practice </h1><p></p>
-    <div id="addCard">
-        <h3>Add Vocabulary Card</h3>
-        Enter Spanish:
-        <input type="text" id="addSpan"> 
-        Enter English:
-        <input type="text" id="addEn">
-        <button id="btnadd">add</button>
-    </div>
+  <h1>Vocabulary Practice</h1>
 
-    <div id="loadList">
-        <h3>Load Vocabularylist</h3>
-        Source: <input type="text" id="load" placeholder="Enter Source name"> 
-        wenn man enter drueckt wird es zu einem normalen text und rechts kommt so ein knopf wenn man da drauf drueck dann kann man es wieder aendern
-    </div>
-    
-    <br>
-    <button id="btn12">English-Spanish</button> 
-    <button id="btn21">Spanish-English</button>
-    <div id="learndiv">
-        <div id="WordText"></div>
-        <input type="text" id="Useranswer" placeholder="Enter Spanish">
-        <p id="msgbox"></p>
-    </div>
+  <div class="card" id="addCard">
+    <h3>Add Vocabulary Card</h3>
+    <label for="addSpan">Enter Spanish:</label>
+    <input type="text" id="addSpan"> 
 
-    <script src="main.js"></script>
+    <label for="addEn">Enter English:</label>
+    <input type="text" id="addEn">
+
+    <button id="btnadd">Add</button>
+  </div>
+
+  <div class="card" id="loadList">
+    <h3>Load Vocabulary List</h3>
+    <label for="load">Source:</label>
+    <input type="text" id="load" placeholder="Enter Source name">
+    <p class="note">
+      Press Enter to save. Click the button on the right to edit again.
+    </p>
+  </div>
+
+  <div class="centered-buttons">
+    <button id="btn12">English ➔ Spanish</button>
+    <button id="btn21">Spanish ➔ English</button>
+  </div>
+
+  <div class="card" id="learndiv">
+    <div id="WordText"></div>
+    <input type="text" id="Useranswer" placeholder="Enter your answer">
+    <p id="msgbox"></p>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
