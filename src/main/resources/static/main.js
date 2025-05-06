@@ -6,6 +6,7 @@ const addEn = document.getElementById('addEn');
 const Fieldload = document.getElementById('load');
 const Useranswer = document.getElementById('Useranswer');
 const messageContainer = document.getElementById('learndiv');
+const msgbox = document.getElementById('msgbox');
 let selec = 0;
 let id = -1;
 
@@ -110,6 +111,8 @@ function checkSpanishWord(answer) {
   .then(data => {console.log("Response from server:", data)
     if (data.result === "correct") { 
       getEnglishWord();
+    }else{
+      msgbox.textContent = data.result;
     }
   })
   .catch(error => console.error("Error:", error));
@@ -128,6 +131,8 @@ function checkEnglishWord(answer){
   .then(data => {console.log("Response from server:", data)
     if (data.result === "correct") { 
       getSpanishWord();
+    }else{
+      msgbox.textContent = data.result;
     }
   })
   .catch(error => console.error("Error:", error));
