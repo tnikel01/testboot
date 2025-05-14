@@ -4,6 +4,10 @@
     margin: 0;
     padding: 0;
   }
+
+  #learndiv {
+    display: none;
+  }
   
   body {
     background: #f4f6f8;
@@ -93,4 +97,3 @@
     color: #555;
     margin-top: 0.5rem;
   }
-  

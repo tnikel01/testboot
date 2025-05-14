@@ -7,6 +7,7 @@ const Fieldload = document.getElementById('load');
 const Useranswer = document.getElementById('Useranswer');
 const messageContainer = document.getElementById('learndiv');
 const msgbox = document.getElementById('msgbox');
+const btnskip = document.getElementById('skip');
 let selec = 0;
 let id = -1;
 
@@ -31,7 +32,6 @@ btn21.addEventListener('click', function() {
   btn21.style.display = "none";
 
   selec = 2;
-
   messageContainer.style.display = "block";
   newMessage.textContent = 'Spanish-English';
 
@@ -99,6 +99,14 @@ Useranswer.addEventListener("keydown", function(event) {
   }
 });
 
+btnskip.addEventListener('click', function(){
+  if(selec == 2){
+    getSpanishWord();
+  }else{
+    getEnglishWord();
+  }
+});
+
 function checkSpanishWord(answer) {
   fetch('/api/checkSpanish', {
     method: "POST",
@@ -113,6 +121,9 @@ function checkSpanishWord(answer) {
       getEnglishWord();
     }else{
       msgbox.textContent = data.result;
+      setTimeout(function() {
+        msgbox.textContent = "";
+      }, 1000);
     }
   })
   .catch(error => console.error("Error:", error));
@@ -133,6 +144,9 @@ function checkEnglishWord(answer){
       getSpanishWord();
     }else{
       msgbox.textContent = data.result;
+      setTimeout(function() {
+        msgbox.textContent = "";
+      }, 1000);
     }
   })
   .catch(error => console.error("Error:", error));

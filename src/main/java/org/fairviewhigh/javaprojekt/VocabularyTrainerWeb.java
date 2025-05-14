@@ -21,7 +21,6 @@ public class VocabularyTrainerWeb {
 
     public static boolean setFilePath(String name) {
     try {
-        // Einfache Sicherheitsprüfung gegen Pfadmanipulation
         if (name == null || name.contains("..") || name.contains("/") || name.contains("\\")) {
             return false;
         }
@@ -29,16 +28,14 @@ public class VocabularyTrainerWeb {
         Path baseDir = Paths.get("/workspaces/javaprojekt/javaprojekt");
         Path newPath = baseDir.resolve(name).normalize();
 
-        // Datei erstellen, falls sie nicht existiert
         if (!Files.exists(newPath)) {
             Files.createFile(newPath);
         }
-        // Datei wurde entweder gefunden oder neu erstellt
         filePath = newPath.toString();
         readFromCsv(filePath);
         return true;
     } catch (IOException e) {
-        e.printStackTrace(); // oder Logging verwenden
+        e.printStackTrace();
         return false;
     }
 }
