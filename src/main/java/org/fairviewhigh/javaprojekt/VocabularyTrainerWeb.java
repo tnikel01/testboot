@@ -16,7 +16,7 @@ import org.fairviewhigh.javaprojekt.cards.VocabularyCard;
 
 public class VocabularyTrainerWeb {
     private static final ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
-    private static String filePath = "/workspaces/javaprojekt/javaprojekt/basic.csv";
+    private static String filePath = "/workspaces/testboot/basic.csv";
     private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static boolean setFilePath(String name) {
@@ -25,7 +25,7 @@ public class VocabularyTrainerWeb {
             return false;
         }
 
-        Path baseDir = Paths.get("/workspaces/javaprojekt/javaprojekt");
+        Path baseDir = Paths.get("/workspaces/testboot/");
         Path newPath = baseDir.resolve(name).normalize();
 
         if (!Files.exists(newPath)) {
@@ -45,7 +45,7 @@ public class VocabularyTrainerWeb {
         File file = new File(filePath);
         System.out.println(file.getAbsolutePath());
         if (filePath.equals("")) {
-            filePath = "/workspaces/javaprojekt/javaprojekt/basic.csv";
+            filePath = "/workspaces/testboot/basic.csv";
         }
         vocabList.add(new VocabularyCard(de, span));
         actualList.add(new VocabularyCard(de, span));
