@@ -15,13 +15,13 @@ import java.nio.file.Path;
 import org.fairviewhigh.javaprojekt.cards.VocabularyCard;
 
 public class VocabularyTrainerWeb {
-    private static final ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
+    private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
     private static String filePath = "/workspaces/testboot/basic.csv";
     private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static boolean setFilePath(String name) {
     try {
-        if (name == null || name.contains("..") || name.contains("/") || name.contains("\\")) {
+        if (name == null || name.contains("..") || name.contains("/") || name.contains("\\") || !name.contains(".csv")){
             return false;
         }
 
@@ -105,6 +105,8 @@ public class VocabularyTrainerWeb {
     
     public static void readFromCsv(String filePath) {
         File file = new File(filePath);
+        vocabList = new ArrayList<VocabularyCard>();
+        actualList = vocabList;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             System.out.println(file.getAbsolutePath());
             String line;

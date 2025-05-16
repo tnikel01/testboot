@@ -20,7 +20,7 @@ public class ApiController {
     @GetMapping("/spanish")
     public ResponseEntity<String> getSpanish() {
         try {
-            String word = trainer.getWord(2);  // Getting the Spanish word
+            String word = trainer.getWord(2);
             if (word == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                      .body("No Spanish word found");
