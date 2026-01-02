@@ -185,14 +185,3 @@ function getEnglishWord(){
   })
   .catch(error => console.error("Error:", error));
 }
-
-fetch('/api/data', {
-  method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: "Hello, backend!" })
-})
-.then(response => response.text())
-.then(data => console.log("Response from server:", data))
-.catch(error => console.error("Error:", error));

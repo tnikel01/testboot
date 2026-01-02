@@ -47,13 +47,6 @@ public class ApiController {
         }
     }
 
-    @PostMapping("/data")
-    public ResponseEntity<Map<String, String>> receiveData(@RequestBody Map<String, String> requestData) {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Received data: " + requestData.get("message"));
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/checkEnglish")
     public ResponseEntity<Map<String, String>> checkEnglish(@RequestBody Map<String, Object> requestData) {
         Map<String, String> response = new HashMap<>();

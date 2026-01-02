@@ -16,7 +16,7 @@ import org.fairviewhigh.javaprojekt.cards.VocabularyCard;
 
 public class VocabularyTrainerWeb {
     private static ArrayList<VocabularyCard> vocabList = new ArrayList<VocabularyCard>();
-    private static String filePath = "/workspaces/testboot/basic.csv";
+    private static String filePath = "src/main/resources/csvs/basic.csv";
     private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static boolean setFilePath(String name) {
@@ -25,7 +25,7 @@ public class VocabularyTrainerWeb {
             return false;
         }
 
-        Path baseDir = Paths.get("/workspaces/testboot/");
+        Path baseDir = Paths.get("src/main/resources/csvs");
         Path newPath = baseDir.resolve(name).normalize();
 
         if (!Files.exists(newPath)) {
@@ -45,7 +45,7 @@ public class VocabularyTrainerWeb {
         File file = new File(filePath);
         System.out.println(file.getAbsolutePath());
         if (filePath.equals("")) {
-            filePath = "/workspaces/testboot/basic.csv";
+            filePath = "src/main/resources/basic.csv";
         }
         vocabList.add(new VocabularyCard(de, span));
         actualList.add(new VocabularyCard(de, span));
@@ -96,12 +96,6 @@ public class VocabularyTrainerWeb {
             return "wrong id";
         }
     }
-
-    public void deleteWord(int id){
-        actualList.remove(id);
-        vocabList.remove(id);
-        removeWordFromFile();
-    }
     
     public static void readFromCsv(String filePath) {
         File file = new File(filePath);
@@ -121,17 +115,6 @@ public class VocabularyTrainerWeb {
                 }
             }
             reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void removeWordFromFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            for (VocabularyCard card : vocabList) {
-                writer.write(card.getGermanWord() + "," + card.getSpanishWord());
-                writer.newLine();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
