@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.io.File;
 import java.nio.file.Files;
@@ -20,26 +19,25 @@ public class VocabularyTrainerWeb {
     private static ArrayList<VocabularyCard> actualList = vocabList;
 
     public static boolean setFilePath(String name) {
-    try {
-        if (name == null || name.contains("..") || name.contains("/") || name.contains("\\") || !name.contains(".csv")){
+        try {
+            if (name == null || name.contains("..") || name.contains("/") || name.contains("\\") || !name.contains(".csv")){
+                return false;
+            }
+
+            Path baseDir = Paths.get("src/main/resources/csvs");
+            Path newPath = baseDir.resolve(name).normalize();
+
+            if (!Files.exists(newPath)) {
+                Files.createFile(newPath);
+            }
+            filePath = newPath.toString();
+            readFromCsv(filePath);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
-
-        Path baseDir = Paths.get("src/main/resources/csvs");
-        Path newPath = baseDir.resolve(name).normalize();
-
-        if (!Files.exists(newPath)) {
-            Files.createFile(newPath);
-        }
-        filePath = newPath.toString();
-        readFromCsv(filePath);
-        return true;
-    } catch (IOException e) {
-        e.printStackTrace();
-        return false;
     }
-}
-
 
     public static void addVocabCard(String de, String span) {
         File file = new File(filePath);
@@ -93,16 +91,25 @@ public class VocabularyTrainerWeb {
             }else
                 return "Wrong " + actualList.get(id).getGermanWord();
         }else{
-            return "wrong id";
+            return "wrong selec";
         }
+    }
+
+    public String[] getList(){
+        String[] list = new String[vocabList.size() * 2];
+        int i = 0;
+        for(VocabularyCard card: vocabList){
+            list[i] = card.getGermanWord();
+            list[i+1] = card.getSpanishWord();
+            i +=2;
+        }
+        return list;
     }
     
     public static void readFromCsv(String filePath) {
-        File file = new File(filePath);
         vocabList = new ArrayList<VocabularyCard>();
         actualList = vocabList;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            System.out.println(file.getAbsolutePath());
             String line;
             while ((line = reader.readLine()) != null) {
                 
@@ -114,7 +121,6 @@ public class VocabularyTrainerWeb {
                     vocabList.add(new VocabularyCard(english, spanish));
                 }
             }
-            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

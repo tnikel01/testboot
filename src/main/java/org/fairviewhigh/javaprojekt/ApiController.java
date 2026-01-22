@@ -47,6 +47,22 @@ public class ApiController {
         }
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> getList() {
+        try {
+            trainer.getWord(0);
+            String[] list = trainer.getList();
+            if (list == null || list.length == 0) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No English word found");
+            }
+            return ResponseEntity.ok(list);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while fetching the word");
+        }
+    }
+
     @PostMapping("/checkEnglish")
     public ResponseEntity<Map<String, String>> checkEnglish(@RequestBody Map<String, Object> requestData) {
         Map<String, String> response = new HashMap<>();
@@ -105,24 +121,24 @@ public class ApiController {
     //doesn't work
     
     @PostMapping("/changeFile")
-public ResponseEntity<Map<String, String>> changeFile(@RequestBody Map<String, String> requestData) {
-    Map<String, String> response = new HashMap<>();
-    
-    if (requestData.containsKey("File") && requestData.get("File") != null) {
-        String fileName = requestData.get("File").trim();
+    public ResponseEntity<Map<String, String>> changeFile(@RequestBody Map<String, String> requestData) {
+        Map<String, String> response = new HashMap<>();
 
-        boolean isFileChanged = VocabularyTrainerWeb.setFilePath(fileName);
-        
-        if (isFileChanged) {
-            response.put("message", "File successfully changed to: " + fileName);
-            return ResponseEntity.ok(response);
+        if (requestData.containsKey("File") && requestData.get("File") != null) {
+            String fileName = requestData.get("File").trim();
+
+            boolean isFileChanged = VocabularyTrainerWeb.setFilePath(fileName);
+
+            if (isFileChanged) {
+                response.put("message", "File successfully changed to: " + fileName);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("error", "Failed to change the file. Please check the file name.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
         } else {
-            response.put("error", "Failed to change the file. Please check the file name.");
+            response.put("error", "Missing or invalid 'File' parameter");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-    } else {
-        response.put("error", "Missing or invalid 'File' parameter");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
-}
 }

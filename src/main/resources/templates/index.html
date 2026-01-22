@@ -5,40 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vocabulary Practice</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Vocabulary Practice</h1>
 
-  <div class="card" id="addCard">
-    <h3>Add Vocabulary Card</h3>
-    <label for="addSpan">Enter Spanish:</label>
-    <input type="text" id="addSpan"> 
+  <div class="container">
+    <div id="mainDiv" class="box">
+      <div class="card" id="addCard">
+        <h3>Add Vocabulary Card</h3>
+        <label for="addSpan">Enter Spanish:</label>
+        <input type="text" id="addSpan">
 
-    <label for="addEn">Enter English:</label>
-    <input type="text" id="addEn">
+        <label for="addEn">Enter English:</label>
+        <input type="text" id="addEn">
 
-    <button id="btnadd">Add</button>
+        <button id="btnadd">Add</button>
+      </div>
+
+      <div class="card" id="loadList">
+        <h3>Load Vocabulary List</h3>
+        <label for="load">Source:</label>
+        <input type="text" id="load" placeholder="Enter Source name">
+      </div>
+
+      <div class="centered-buttons">
+        <button id="btn12">English ➔ Spanish</button>
+        <button id="btn21">Spanish ➔ English</button>
+      </div>
+
+      <div class="card" id="learndiv">
+        <div id="WordText"></div>
+        <input type="text" id="Useranswer" placeholder="Enter your answer">
+        <p id="msgbox"></p>
+        <button id="skip">Skip</button>
+        <br>
+        <button id="back"><i class="fa-solid fa-caret-left"></i> </button>
+        <p id="e-sText"></p>
+      </div>
+    </div>
+    <div class="box" id="listDiv">
+      <button id="close">x</button>
+      <ul class="card"><p id="listenName"></p>
+
+      </ul>
+    </div>
   </div>
 
-  <div class="card" id="loadList">
-    <h3>Load Vocabulary List</h3>
-    <label for="load">Source:</label>
-    <input type="text" id="load" placeholder="Enter Source name">
-  </div>
-
-  <div class="centered-buttons">
-    <button id="btn12">English ➔ Spanish</button>
-    <button id="btn21">Spanish ➔ English</button>
-  </div>
-
-  <div class="card" id="learndiv">
-    <div id="WordText"></div>
-    <input type="text" id="Useranswer" placeholder="Enter your answer">
-    <p id="msgbox"></p>
-    <button id="skip">Skip</button>
-  </div>
-  
   <script src="main.js"></script>
 </body>
 </html>

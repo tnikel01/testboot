@@ -1,5 +1,5 @@
-const btn12 = document.getElementById('btn12');
-const btn21 = document.getElementById('btn21');
+const btn12 = document.getElementById('btn12'); //english-spanish
+const btn21 = document.getElementById('btn21'); //spanish-english
 const btnadd = document.getElementById('btnadd');
 const addSpan = document.getElementById('addSpan');
 const addEn = document.getElementById('addEn');
@@ -7,36 +7,48 @@ const Fieldload = document.getElementById('load');
 const Useranswer = document.getElementById('Useranswer');
 const messageContainer = document.getElementById('learndiv');
 const msgbox = document.getElementById('msgbox');
+const esText = document.getElementById('e-sText');
 const btnskip = document.getElementById('skip');
+const btnback = document.getElementById('back');
+const btnclose = document.getElementById('close');
 let selec = 0;
 let id = -1;
 
 btn12.addEventListener('click', function() {
-  const newMessage = document.createElement('p');
-
   selec = 1;
 
-  btn12.style.display = "none";
-  btn21.style.display = "none";
+  btn12.classList.add("hidden");
+  btn21.classList.add("hidden");
 
   messageContainer.style.display = "block";
-  newMessage.textContent = 'English-Spanish';
+  esText.textContent = 'English-Spanish';
 
-  messageContainer.appendChild(newMessage);
   getEnglishWord();
 });
 
 btn21.addEventListener('click', function() {
-  const newMessage = document.createElement('p');
-  btn12.style.display = "none";
-  btn21.style.display = "none";
+   selec = 2;
 
-  selec = 2;
+  btn12.classList.add("hidden");
+  btn21.classList.add("hidden");
+
   messageContainer.style.display = "block";
-  newMessage.textContent = 'Spanish-English';
+  esText.textContent = 'Spanish-English';
 
-  messageContainer.appendChild(newMessage);
   getSpanishWord();
+});
+
+btnback.addEventListener('click', function() {
+  btn12.classList.remove("hidden");
+  btn21.classList.remove("hidden");
+
+  esText.textContent = "";
+  messageContainer.style.display = "none";
+});
+
+btnclose.addEventListener('click', function() {
+  console.log("CLOSE");
+  document.getElementById('listDiv').classList.add("hidden");
 });
 
 btnadd.addEventListener('click', function(){
@@ -51,6 +63,7 @@ btnadd.addEventListener('click', function(){
   .then(data => {console.log("Response from server:", data)
     addEn.value="";
     addSpan.value="";
+    getWordListFromBackend();
   })
   .catch(error => console.error("Error:", error));
 });
@@ -73,6 +86,7 @@ Fieldload.addEventListener("keydown", function(event) {
       console.log("Response from server:", data);
       if (data.message) {
         alert(data.message);
+        getWordListFromBackend();
       } else if (data.error) {
         alert("Fehler: " + data.error);
       }
@@ -185,3 +199,42 @@ function getEnglishWord(){
   })
   .catch(error => console.error("Error:", error));
 }
+
+function getWordListFromBackend() {
+    fetch('/api/list')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+            }
+            return response.json();  // Expecting a String Array from backend
+        })
+        .then(wordArray => {
+            // Pass the fetched array to the updateList function
+            updateList(wordArray);
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+function updateList(wordArray) {
+    const listElement = document.getElementById('listenName');
+
+    listElement.innerHTML = '';
+
+    if (wordArray.length % 2 !== 0) {
+        console.error("The word array must have an even number of elements.");
+        return;
+    }
+
+    for (let i = 0; i < wordArray.length; i += 2) {
+        const englishWord = wordArray[i];
+        const spanishWord = wordArray[i + 1];
+
+        const listItem = document.createElement('li');
+        listItem.textContent = `${englishWord} - ${spanishWord}`;
+
+        listElement.appendChild(listItem);
+    }
+    document.getElementById('listDiv').classList.remove("hidden");
+}
+
+getWordListFromBackend();
